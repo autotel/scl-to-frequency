@@ -4,26 +4,13 @@
 
 'use strict';
 
-var fs = require('fs');
-
 let description = '';
 
-let readFile = (filepath) => {
-    try {
-        return fs.readFileSync(filepath, { "encoding": "utf-8" });
-    } catch (e) { 
-        return ''; 
-    }
-}
-
-let sclTuning = (fileName, baseNote, baseFrequency) => {
-    baseNote = baseNote || 48;
-    baseFrequency = baseFrequency || 261.625565300598623;
+let readString = (string, baseNote = 0, baseFrequency = 1) => {
+    let lines = string.split('\n');
     let tunings = [];
     let counter = 0;
-    let file = readFile(fileName);
-    let lines = file.split('\n');
-    if (file) {
+    if (string) {
         for (let i = 0, ln = lines.length; i < ln; i++) {
             if (lines[i].substring(0,1) !== '!' && lines[i].replace(/\s/g, '')) {
                 counter++;
@@ -61,5 +48,8 @@ let tuningToFrequencies = (tuning, baseNote, baseFrequency) => {
     return frequencies.sort((a, b) => a - b);
 }
 
-module.exports = sclTuning;
+export default {
+    readString,
+    tuningToFrequencies,
+};
 
